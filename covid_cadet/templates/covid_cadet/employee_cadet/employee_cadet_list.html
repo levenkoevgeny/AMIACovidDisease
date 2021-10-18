@@ -174,7 +174,7 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td><a href="{% url 'covid_cadet:employee-cadet-update' employee.id %}"
-                               class="link-secondary">{{ employee.last_name }}</a></td>
+                               class="link-secondary needs-next">{{ employee.last_name }}</a></td>
                         <td>{{ employee.first_name }}</td>
                         <td>{{ employee.patronymic }}</td>
                         <td>{{ employee.date_of_birth|default_if_none:"Нет данных" }}</td>

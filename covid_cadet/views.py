@@ -33,8 +33,6 @@ def course_list(request, subdivision_id):
 
 @login_required
 def employee_cadet_list(request):
-    path = str(request.get_full_path())
-    request.session['next_path'] = path
     employees_list = EmployeeCadet.objects.all()
     f = EmployeeCadetFilter(request.GET, queryset=employees_list, request=request)
     return render(request, 'covid_cadet/employee_cadet/employee_cadet_list.html',

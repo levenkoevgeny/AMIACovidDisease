@@ -98,7 +98,6 @@ class EmployeeCadetFilter(django_filters.FilterSet):
 
 class SubdivisionCadetFilter(django_filters.FilterSet):
     subdivisions_choices = set()
-
     for sub in SubdivisionCadet.objects.all():
         subdivisions_choices.add((sub.id, sub.subdivision_name))
 

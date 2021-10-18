@@ -142,7 +142,7 @@ class Employee(models.Model):
                 self.subdivision.save()
 
     def __str__(self):
-        return self.last_name
+        return self.last_name + ' ' + self.first_name + ' ' + self.patronymic
 
     @property
     def get_marital_status(self):
