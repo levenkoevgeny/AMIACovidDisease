@@ -1,0 +1,5 @@
+{% extends 'covid_cadet/employee_cadet/employee_cadet_input_form.html' %}
+
+{% block form_title %}
+    <form class="needs-validation" action="{% url 'covid_cadet:employee-cadet-update' employee_cadet_id=employee.id %}" method="post">{% csrf_token %}
+{% endblock %}

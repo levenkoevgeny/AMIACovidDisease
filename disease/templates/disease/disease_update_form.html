@@ -1,0 +1,5 @@
+{% extends "disease/disease_input_form.html" %}
+
+{% block form_title %}
+    <form class="needs-validation" action="{% url 'disease:disease-update' disease_id=disease.id %}" method="post" novalidate>{% csrf_token %}
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block own_css %}{% endblock %}
+{% block title %}
+    <title>Детальная информация</title>
+{% endblock %}
+
+{% block content %}
+    <section class="pt-2 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">{{ employee.last_name|default_if_none:"" }}
+                    {{ employee.first_name|default_if_none:"" }}
+                    {{ employee.patronymic|default_if_none:"" }}</h1>
+                <h2 class="fw-light">{{ employee.subdivision.subdivision_name|default_if_none:"Нет данных" }}</h2>
+                <h3 class="fw-light">Должность - {{ employee.position|default_if_none:"Нет данных" }}</h3>
+                <h3 class="fw-light">Звание - {{ employee.rank|default_if_none:"Нет данных" }}</h3>
+                <h4 class="fw-light">Дата рождения - {{ employee.date_of_birth|default_if_none:"Нет данных" }}</h4>
+                <h4 class="fw-light">Семейное положение
+                    - {{ employee.get_marital_status|default_if_none:"Нет данных" }}</h4>
+                <h4 class="fw-light">Телефон: {{ employee.phone_number|default_if_none:"Нет данных" }}</h4>
+                <h4 class="fw-light">Адрес: {{ employee.address|default_if_none:"Нет данных" }}</h4>
+                <h4 class="fw-light">Имеет противопоказания:
+                    {% if employee.has_contraindications %}
+                        Да - {{ employee.contraindications_explain }}
+                    {% else %}
+                        Нет
+                    {% endif %}
+                </h4>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <br><br>
+        <div class="list-group">
+            <div class="list-group-item d-flex gap-3 py-0" aria-current="true">
+                <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32"
+                     class="rounded-circle flex-shrink-0">
+                <div class="d-flex gap-2 w-100 justify-content-between">
+                    <div>
+                        <h6 class="mb-0">Вакцинация</h6>
+                        {% if employee.vaccinecourse_set.exists %}
+                            {% for vaccine in employee.vaccinecourse_set.all %}
+                                <p class="mb-0 opacity-75"><a href="{% url 'covid:employee-vaccines' employee.id %}"
+                                                              class="link-secondary needs-next"><b>{{ forloop.counter }}
+                                    этап:</b>
+                                    Первая вакцина - {{ vaccine.date1|default_if_none:'Не выполнена' }}
+                                    Вторая вакцина - {{ vaccine.date2|default_if_none:'Не выполнена' }}
+                                    {{ vaccine.vaccine_kind.kind }}</a></p>
+                            {% endfor %}
+                        {% else %}
+                            Записей нет
+                        {% endif %}
+
+
+                    </div>
+                    <small class="opacity-50 text-nowrap"></small>
+                </div>
+            </div>
+            <div href="" class="list-group-item d-flex gap-3 py-3" aria-current="true">
+                <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32"
+                     class="rounded-circle flex-shrink-0">
+                <div class="d-flex gap-2 w-100 justify-content-between">
+                    <div>
+                        <h6 class="mb-0">Больничные листы</h6>
+                        {% if employee.disease_set.exists %}
+                            {% for disease in employee.disease_set.all %}
+                                <p class="mb-0 opacity-75"><a href="{% url 'disease:disease-update' disease.id %}"
+                                                              class="link-secondary needs-next"><b>{{ forloop.counter }}</b>
+                                    {{ disease.get_disease_kind }} {{ disease.date_of_begin|default_if_none:'Нет данных' }}
+                                    - {{ disease.date_of_end|default_if_none:'Нет данных' }}</a></p>
+                            {% endfor %}
+                        {% else %}
+                            Записей нет
+                        {% endif %}
+                    </div>
+                    <small class="opacity-50 text-nowrap"></small>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block own_js %}{% endblock %}
+

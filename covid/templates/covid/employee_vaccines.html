@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block own_css %}{% endblock %}
+{% block title %}
+    <title>{{ employee.last_name }}</title>
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'disease/css/dashboard.css' %}">#}
+{% endblock %}
+
+{% block content %}
+    <div id="main-div">
+        <div class="container">
+            <br>
+            <div class="d-flex justify-content-end">
+                <a href="" class="link-secondary needs-next"
+                   onclick="window.open('{% url 'covid:employee-vaccines-add' employee.id %}','popup','width=300,height=400'); return false;">
+                    <b>Добавить
+                        курс вакцинирования</b>
+                </a>
+            </div>
+            <br>
+            {% if not employee.vaccinecourse_set.all %}
+                <p>Список пуст</p>
+            {% else %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">№ п.п</th>
+                        <th scope="col">Вид вакцины</th>
+                        <th scope="col">Дата первой вакцинации</th>
+                        <th scope="col">Дата второй вакцинации</th>
+                        <th scope="col">Дата добавления курса</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for vaccine in employee.vaccinecourse_set.all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="" class="link-secondary needs-next"
+                                   onclick="window.open('{% url 'covid:employee-vaccines-update' vaccine.id %}','popup','width=300,height=400'); return false;">{{ vaccine.vaccine_kind }}</a>
+                            </td>
+                            <td>{{ vaccine.date1|default_if_none:"Нет данных" }}</td>
+                            <td>{{ vaccine.date2|default_if_none:"Нет данных" }}</td>
+                            <td>{{ vaccine.add_date_time|default_if_none:"Нет данных" }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block own_js %}
+
+
+{% endblock %}
+

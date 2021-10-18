@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block own_css %}{% endblock %}
+{% block title %}
+    <title>Факультеты</title>
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'disease/css/dashboard.css' %}">#}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <br><br>
+        {#            <div class="card" style="width: 40rem;">#}
+        {#                <div class="card-body">#}
+        {#                    <h4 class="card-title">Сводные данные</h4>#}
+        {#                    <h5><span class="badge bg-secondary">720</span> Всего сотрудников</h5>#}
+        {#                    <h5><span class="badge bg-secondary">100/70/30</span> Всего больничных листов/болезнь/карантин</h5>#}
+        {#                    <h5><span class="badge bg-secondary">10</span> сейчас открыто больничных листов</h5>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#            <br><br>#}
+        <p>
+            <a class="link-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
+               aria-expanded="false" aria-controls="collapseExample">
+                Расширенный поиск
+            </a>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Подразделение</label>
+                                {% render_field filter.form.id class+="form-control my-select2" style="width: 100%" %}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Поиск</button>
+                    <a href="{% url 'covid_cadet:subdivision-list' %}" class="btn btn-secondary">Сбросить фильтр</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+
+        {% if subdivisions_list %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">№ п.п</th>
+                    <th scope="col">Факультет</th>
+                    <th scope="col">Численность</th>
+                    <th scope="col">Количество лиц, получивших одну прививку против инфекции COVID-19</th>
+                    <th scope="col">Количество лиц, получивших две прививки против инфекции COVID-19</th>
+                    <th scope="col">Количество лиц, получивших две прививки против инфекции COVID-19</th>
+                    <th scope="col">Охват (первая прививка)</th>
+                    <th scope="col">Охват (вторая прививка)</th>
+                    <th scope="col">Желающие пройти вакцинацию</th>
+                    <th scope="col">Последнее редактирование</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for subdivision in subdivisions_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'covid_cadet:course-list' subdivision.id %}"
+                               class="link-secondary">{{ subdivision.subdivision_name }}</a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <div class="container">
+                <h5>Список пуст</h5>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block own_js %}{% endblock %}
+

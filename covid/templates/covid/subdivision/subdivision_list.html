@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block own_css %}
+{% endblock %}
+{% block title %}
+    <title>Больничные - главная</title>
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'disease/css/dashboard.css' %}">#}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <br><br>
+        <div class="card" style="width: 40rem;">
+            <div class="card-body">
+                <h4 class="card-title">Сводные данные</h4>
+                <h5>Всего сотрудников <span class="badge bg-secondary">{{ employee_count_sum }}</span></h5>
+                <h5>Получили одну прививку <span
+                        class="badge bg-secondary">{{ employee_count_sum_first_vaccine }}</span></h5>
+                <h5>Получили две прививки <span
+                        class="badge bg-secondary">{{ employee_count_sum_second_vaccine }}</span></h5>
+                <h5>Охват вакцинацией (первая прививка), % <span
+                        class="badge bg-secondary">{{ employee_percent_first }}</span></h5>
+                <h5>Охват вакцинацией (вторая прививка), % <span
+                        class="badge bg-secondary">{{ employee_percent_second }}</span></h5>
+                {#                <h5>Имеют противопоказания <span class="badge bg-secondary">10</span></h5>#}
+            </div>
+        </div>
+        <br><br>
+        <p>
+            <a class="link-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
+               aria-expanded="false" aria-controls="collapseExample">
+                Расширенный поиск
+            </a>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Подразделение</label>
+                                {% render_field filter.form.subdivision_name class+="form-control my-select2" style="width: 100%" %}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Поиск</button>
+                    <a href="{% url 'covid:subdivisions' %}" class="btn btn-secondary">Сбросить фильтр</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+
+        {% if subdivisions_list %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col" class="align-middle">№ п.п</th>
+                    <th scope="col" class="align-middle">Название подразделения</th>
+                    <th scope="col" class="align-middle">Общее число сотрудников</th>
+                    <th scope="col" class="align-middle">Количество лиц, получивших одну прививку против инфекции
+                        COVID-19
+                    </th>
+                    <th scope="col" class="align-middle">Количество лиц, получивших две прививки против инфекции
+                        COVID-19
+                    </th>
+                    <th scope="col" class="align-middle">Охват (первая прививка), %</th>
+                    <th scope="col" class="align-middle">Охват (вторая прививка), %</th>
+                    <th scope="col" class="align-middle">Дата и время последнего редактирования</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for subdivision in subdivisions_list %}
+                    {% if subdivision.employee_set.count > 0 %}
+                        <tr>
+                            <td class="align-middle">{{ forloop.counter }}</td>
+                            <td class="align-middle"><a href="{% url 'covid:list' %}?subdivision={{ subdivision.id }}"
+                                                        class="link-secondary">{{ subdivision.subdivision_name|default_if_none:"Нет данных" }}</a>
+                            </td>
+                            <td class="align-middle">{{ subdivision.get_employee_count|default_if_none:"Нет данных" }}</td>
+                            <td class="align-middle">{{ subdivision.get_employee_count_with_first_vaccine|default_if_none:"Нет данных" }}</td>
+                            <td class="align-middle">{{ subdivision.get_employee_count_with_second_vaccine|default_if_none:"Нет данных" }}</td>
+                            <td class="align-middle">{{ subdivision.get_covid_percent_first|default_if_none:"Нет данных" }}</td>
+                            <td class="align-middle">{{ subdivision.get_covid_percent_second|default_if_none:"Нет данных" }}</td>
+                            <td class="align-middle">{{ subdivision.last_modified|default_if_none:"Нет данных" }}</td>
+                        </tr>
+                    {% endif %}
+
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="container">
+                <h5>Список пуст</h5>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block own_js %}{% endblock %}
+

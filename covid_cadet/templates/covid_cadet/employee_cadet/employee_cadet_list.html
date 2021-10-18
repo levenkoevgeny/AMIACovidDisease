@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block own_css %}{% endblock %}
+{% block title %}
+    <title>Курсанты</title>
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'disease/css/dashboard.css' %}">#}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <br><br>
+        <div class="card" style="width: 40rem;">
+            <div class="card-body">
+                <h4 class="card-title">Сводные данные</h4>
+                <h5><span class="badge bg-secondary">720</span> Всего сотрудников</h5>
+                <h5><span class="badge bg-secondary">100/70/30</span> Всего больничных листов/болезнь/карантин</h5>
+                <h5><span class="badge bg-secondary">10</span> сейчас открыто больничных листов</h5>
+            </div>
+        </div>
+        <br><br>
+        <p>
+            <a class="link-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
+               aria-expanded="false" aria-controls="collapseExample">
+                Расширенный поиск
+            </a>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Фамилия</label>
+                                {% render_field filter.form.last_name class+="form-control" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Группа</label>
+                                {% render_field filter.form.group_fk class+="form-control my-select2" style="width: 100%" %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Курс</label>
+                                {% render_field filter.form.group_fk__course class+="form-select my-select2" style="width: 100%" %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">Факультет</label>
+                                {% render_field filter.form.group_fk__course__faculty class+="form-select my-select2" style="width: 100%" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Звание</label>
+                                {% render_field filter.form.rank class+="form-control my-select2" style="width: 100%" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Должность</label>
+                                {% render_field filter.form.position class+="form-select my-select2" style="width: 100%" %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата рождения с</label>
+                                {% render_field filter.form.date_of_birth_start class+="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата рождения по</label>
+                                {% render_field filter.form.date_of_birth_end class+="form-select" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Пол</label>
+                                {% render_field filter.form.sex class+="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Семейное положение</label>
+                                {% render_field filter.form.marital_status class+="form-select" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Рабочий статус</label>
+                                {% render_field filter.form.work_status class+="form-select" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Имеет противопоказания</label>
+                                {% render_field filter.form.has_contraindications class+="form-select" %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Желает пройти вакцинацию</label>
+                                {% render_field filter.form.is_willing class+="form-select" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Вакцинирован</label>
+                                <select class="form-select" aria-label="Default select example" name="is_vaccinated">
+                                    {% if condition == "all" %}
+                                        <option value="all" selected>---------</option>
+                                        <option value="True">Да</option>
+                                        <option value="">Нет</option>
+                                    {% elif condition == "True" %}
+                                        <option value="all">---------</option>
+                                        <option value="True" selected>Да</option>
+                                        <option value="">Нет</option>
+                                    {% else %}
+                                        <option value="all">---------</option>
+                                        <option value="True">Да</option>
+                                        <option value="" selected>Нет</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Поиск</button>
+                    <a href="{% url 'covid_cadet:employee-cadet-list' %}" class="btn btn-secondary">Сбросить фильтр</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if request.user.is_superuser %}
+            <div style="text-align: right" class="mb-3">
+                <a href="{% url 'covid_cadet:employee-cadet-input' %}" class="link-secondary"><b>Добавить
+                    курсанта</b></a>
+            </div>
+        {% endif %}
+        {% if employee_cadet_list %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">№ п.п</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Дата рождения</th>
+                    <th scope="col">Группа</th>
+                    <th scope="col">Дата первой вакцинации</th>
+                    <th scope="col">Дата второй вакцинации</th>
+                    <th scope="col">Желает пройти вакцинацию</th>
+                    <th scope="col">Дата и время последнего редактирования</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for employee in employee_cadet_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'covid_cadet:employee-cadet-update' employee.id %}"
+                               class="link-secondary">{{ employee.last_name }}</a></td>
+                        <td>{{ employee.first_name }}</td>
+                        <td>{{ employee.patronymic }}</td>
+                        <td>{{ employee.date_of_birth|default_if_none:"Нет данных" }}</td>
+                        <td>{{ employee.group_fk.group_name }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ employee.last_modified }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <div class="container">
+                <h5>Список пуст</h5>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block own_js %}{% endblock %}
+

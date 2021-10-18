@@ -1,0 +1,5 @@
+{% extends 'covid/employee/employee_input_form.html' %}
+
+{% block form_title %}
+    <form class="needs-validation" action="{% url 'covid:employee-update' employee_id=employee.id %}" method="post">{% csrf_token %}
+{% endblock %}

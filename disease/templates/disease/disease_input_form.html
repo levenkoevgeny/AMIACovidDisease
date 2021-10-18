@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block own_css %}{% endblock %}
+{% block title %}
+    <title>Новая запись</title>
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'disease/css/dashboard.css' %}">#}
+{% endblock %}
+
+{% block content %}
+    {% for error in form.non_field_errors %}
+        <b>{{ field.label }} {{ error }}</b><br>
+    {% endfor %}
+
+    {% for field in form %}
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <b>{{ field.label }} {{ error }}</b><br>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    <div class="container">
+        <br><br>
+        {% block form_title %}
+            <form class="needs-validation" action="{% url 'disease:disease-input' %}" method="post">{% csrf_token %}
+        {% endblock %}
+        <div class="shadow-lg p-3 mb-3 bg-body rounded">
+            <h5>Основные данные</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Вид записи</label>
+                        {% render_field form.disease_kind class+="form-control" %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Сотрудник</label>
+                        {% render_field form.employee class+="form-control my-select2" style="width: 100%" %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="shadow-lg p-3 mb-3 bg-body rounded">
+            <h5>Начало болезни/карантина</h5>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Болезнь</label>
+                        {% render_field form.disease class+="form-control" %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Дата обращения к врачу</label>
+                        {% render_field form.date_of_application class+="form-control" %}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Дата начала больничного/карантина</label>
+                        {% render_field form.date_of_begin class+="form-control" %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Дата сдачи анализа</label>
+                        {% render_field form.date_of_analysis class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Дата результата анализа</label>
+                        {% render_field form.date_of_confirmation class+="form-control" %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Где лечится</label>
+                        {% render_field form.where_treated class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Состояние здоровья</label>
+                        {% render_field form.health_status class+="form-control" %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label">Диагноз</label>
+                        {% render_field form.diagnosis rows="1" class+="form-control" %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label">Дополнительная информация</label>
+                        {% render_field form.extra_data rows="2" class+="form-control" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shadow-lg p-3 mb-3 bg-body rounded">
+            <h5>Заполнять после окончания болезни/карантина</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Дата окончания больничного/карантина</label>
+                        {% render_field form.date_of_end class+="form-control" %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Последствие болезни</label>
+                        {% render_field form.consequence class+="form-control" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-secondary mb-3">Сохранить</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block own_js %}{% endblock %}
+

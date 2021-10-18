@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Вход в систему</title>
+    <link rel="shortcut icon" href="{% static 'covid/img/favicon.ico' %}"/>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'covid/css/signin.css' %}">
+
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'covid/css/bootstrap.min.css' %}">
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="text-center">
+
+<main class="form-signin">
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            Логин либо пароль введены неверно! Попробуйте еще раз!
+        </div>
+    {% endif %}
+    <form method="post">{% csrf_token %}
+        <img class="mb-4" src="{% static 'covid/img/favicon.ico' %}" alt="" width="72" height="57">
+        {#        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>#}
+
+        <div class="form-floating">
+            <input type="text" class="form-control" name="username" id="username" placeholder="Введите логин">
+            <label for="floatingInput">Логин</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Введите пароль">
+            <label for="floatingPassword">Пароль</label>
+        </div>
+
+        <div class="checkbox mb-3">
+
+        </div>
+        <button class="w-100 btn btn-lg btn-secondary" type="submit">Вход в систему</button>
+    </form>
+</main>
+
+
+</body>
+</html>
