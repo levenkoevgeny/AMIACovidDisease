@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from covid.models import Rank, Position
+from covid.models import VaccineKind
+from dateutil.relativedelta import *
+from datetime import datetime, date
 
 
 class SubdivisionCadet(models.Model):
@@ -13,6 +16,81 @@ class SubdivisionCadet(models.Model):
 
     def __str__(self):
         return str(self.subdivision_name)
+
+    @property
+    def get_count(self):
+        return EmployeeCadet.objects.filter(group_fk__course__faculty=self.id).count()
+
+    @property
+    def get_count_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return EmployeeCadet.objects.filter(group_fk__course__faculty=self.id, date_of_birth__lte=old_date).count()
+
+    @property
+    def get_covid_1_count(self):
+        return EmployeeCadet.objects.filter(group_fk__course__faculty=self.id, last_date1__isnull=False).count()
+
+    @property
+    def get_covid_1_count_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return EmployeeCadet.objects.filter(group_fk__course__faculty=self.id, last_date1__isnull=False,
+                                            date_of_birth__lte=old_date).count()
+
+    @property
+    def get_covid_2_count(self):
+        return EmployeeCadet.objects.filter(group_fk__course__faculty=self.id, last_date2__isnull=False).count()
+
+    @property
+    def get_covid_2_count_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return EmployeeCadet.objects.filter(group_fk__course__faculty=self.id, last_date2__isnull=False,
+                                            date_of_birth__lte=old_date).count()
+
+    @property
+    def get_covid_percent(self):
+        try:
+            res = self.get_covid_1_count / self.get_count * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_second(self):
+        try:
+            res = self.get_covid_2_count / self.get_count * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_adult(self):
+        try:
+            res = self.get_covid_1_count_adult / self.get_count_adult * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_adult_second(self):
+        try:
+            res = self.get_covid_2_count_adult / self.get_count_adult * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_willing_count(self):
+        return EmployeeCadet.objects.filter(group_fk__course__faculty=self.id, is_willing=True).count()
+
+    @property
+    def get_willing_count_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return EmployeeCadet.objects.filter(group_fk__course__faculty=self.id, is_willing=True,
+                                            date_of_birth__lte=old_date).count()
 
     class Meta:
         ordering = ('id',)
@@ -30,6 +108,81 @@ class Course(models.Model):
     def __str__(self):
         return self.course_name + ' ' + self.faculty.subdivision_name
 
+    @property
+    def get_count(self):
+        return EmployeeCadet.objects.filter(group_fk__course=self.id).count()
+
+    @property
+    def get_count_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return EmployeeCadet.objects.filter(group_fk__course=self.id, date_of_birth__lte=old_date).count()
+
+    @property
+    def get_covid_1_count(self):
+        return EmployeeCadet.objects.filter(group_fk__course=self.id, last_date1__isnull=False).count()
+
+    @property
+    def get_covid_1_count_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return EmployeeCadet.objects.filter(group_fk__course=self.id, last_date1__isnull=False,
+                                            date_of_birth__lte=old_date).count()
+
+    @property
+    def get_covid_2_count(self):
+        return EmployeeCadet.objects.filter(group_fk__course=self.id, last_date2__isnull=False).count()
+
+    @property
+    def get_covid_2_count_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return EmployeeCadet.objects.filter(group_fk__course=self.id, last_date2__isnull=False,
+                                            date_of_birth__lte=old_date).count()
+
+    @property
+    def get_covid_percent(self):
+        try:
+            res = self.get_covid_1_count / self.get_count * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_second(self):
+        try:
+            res = self.get_covid_2_count / self.get_count * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_adult(self):
+        try:
+            res = self.get_covid_1_count_adult / self.get_count_adult * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_adult_second(self):
+        try:
+            res = self.get_covid_2_count_adult / self.get_count_adult * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_willing_count(self):
+        return EmployeeCadet.objects.filter(group_fk__course=self.id, is_willing=True).count()
+
+    @property
+    def get_willing_count_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return EmployeeCadet.objects.filter(group_fk__course=self.id, is_willing=True,
+                                            date_of_birth__lte=old_date).count()
+
     class Meta:
         ordering = ('course_name',)
         verbose_name = 'Курс'
@@ -45,6 +198,80 @@ class Group(models.Model):
 
     def __str__(self):
         return str(self.group_name) + ' ' + str(self.course.course_name) + ' ' + str(self.course.faculty)
+
+    @property
+    def get_employees(self):
+        return self.employeecadet_set
+
+    @property
+    def get_employees_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return self.employeecadet_set.filter(date_of_birth__lte=old_date)
+
+    @property
+    def get_count(self):
+        return self.get_employees.count()
+
+    @property
+    def get_count_adult(self):
+        return self.get_employees_adult.count()
+
+    @property
+    def get_covid_1_count(self):
+        return self.get_employees.filter(last_date1__isnull=False).count()
+
+    @property
+    def get_covid_1_count_adult(self):
+        return self.get_employees_adult.filter(last_date1__isnull=False).count()
+
+    @property
+    def get_covid_2_count(self):
+        return self.get_employees.filter(last_date2__isnull=False).count()
+
+    @property
+    def get_covid_2_count_adult(self):
+        return self.get_employees_adult.filter(last_date2_date__isnull=False).count()
+
+    @property
+    def get_covid_percent(self):
+        try:
+            res = self.get_covid_1_count / self.get_count * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_second(self):
+        try:
+            res = self.get_covid_2_count / self.get_count * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_adult(self):
+        try:
+            res = self.get_covid_1_count_adult / self.get_count_adult * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_covid_percent_adult_second(self):
+        try:
+            res = self.get_covid_2_count_adult / self.get_count_adult * 100
+        except ZeroDivisionError:
+            res = 0.0
+        return round(res, 2)
+
+    @property
+    def get_willing_count(self):
+        return self.get_employees.filter(is_willing=True).count()
+
+    @property
+    def get_willing_count_adult(self):
+        return self.get_employees_adult.filter(is_willing=True).count()
 
     class Meta:
         ordering = ('group_name',)
@@ -89,6 +316,8 @@ class EmployeeCadet(models.Model):
     contraindications_explain = models.TextField(verbose_name="Пояснение к противопоказаниям", blank=True, null=True)
     is_willing = models.BooleanField(verbose_name="Желает пройти вакцинацию", default=False)
     last_modified = models.DateTimeField(verbose_name="Дата и время последнего редактирования", auto_now=True)
+    last_date1 = models.DateField(verbose_name="Последняя вакцинация (дата 1)", blank=True, null=True)
+    last_date2 = models.DateField(verbose_name="Последняя вакцинация (дата 2)", blank=True, null=True)
 
     def __str__(self):
         return self.last_name
@@ -97,3 +326,40 @@ class EmployeeCadet(models.Model):
         ordering = ('last_name',)
         verbose_name = 'Курсант'
         verbose_name_plural = '4. Курсанты'
+
+
+class VaccineCourse(models.Model):
+    vaccine_kind = models.ForeignKey(VaccineKind, on_delete=models.CASCADE, related_name="cadet_vaccine_kind",
+                                     verbose_name="Вид вакцины")
+    date1 = models.DateField(verbose_name="Дата проведения первой вакцинации", blank=True, null=True)
+    date2 = models.DateField(verbose_name="Дата проведения второй вакцинации", blank=True, null=True)
+    employee = models.ForeignKey(EmployeeCadet, on_delete=models.CASCADE, verbose_name="Сотрудник/курсант")
+    add_date_time = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(verbose_name="Дата и время последнего редактирования", auto_now=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.last_modified:
+            if self.employee:
+                self.employee.last_modified = self.last_modified
+                self.employee.save()
+        if self.employee.vaccinecourse_set.exists():
+            last_vaccine = self.employee.vaccinecourse_set.all().last()
+            if self == last_vaccine:
+                self.employee.last_date1 = self.date1
+                self.employee.last_date2 = self.date2
+                self.employee.save()
+
+    def __str__(self):
+        return self.vaccine_kind.kind + ' ' + self.employee.last_name
+
+    @property
+    def get_is_adult(self):
+        today = date.today()
+        old_date = today - relativedelta(years=+18)
+        return self.date_of_birth <= old_date
+
+    class Meta:
+        ordering = ('id',)
+        verbose_name = 'Курс вакцинации'
+        verbose_name_plural = '5. Курсы вакцинации'

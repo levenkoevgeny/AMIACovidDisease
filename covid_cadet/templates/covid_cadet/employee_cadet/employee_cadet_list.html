@@ -12,10 +12,16 @@
         <br><br>
         <div class="card" style="width: 40rem;">
             <div class="card-body">
-                <h4 class="card-title">Сводные данные</h4>
-                <h5><span class="badge bg-secondary">720</span> Всего сотрудников</h5>
-                <h5><span class="badge bg-secondary">100/70/30</span> Всего больничных листов/болезнь/карантин</h5>
-                <h5><span class="badge bg-secondary">10</span> сейчас открыто больничных листов</h5>
+                 <h4 class="card-title">Сводные данные</h4>
+                <h5>Всего сотрудников <span class="badge bg-secondary">{{ employee_count_sum }}</span></h5>
+                <h5>Получили одну прививку <span
+                        class="badge bg-secondary">{{ employee_count_sum_first_vaccine }}</span></h5>
+                <h5>Получили две прививки <span
+                        class="badge bg-secondary">{{ employee_count_sum_second_vaccine }}</span></h5>
+                <h5>Охват вакцинацией (первая прививка), % <span
+                        class="badge bg-secondary">{{ get_employee_covid_percent_sum_first }}</span></h5>
+                <h5>Охват вакцинацией (вторая прививка), % <span
+                        class="badge bg-secondary">{{ get_employee_covid_percent_sum_second }}</span></h5>
             </div>
         </div>
         <br><br>
@@ -157,32 +163,43 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">№ п.п</th>
-                    <th scope="col">Фамилия</th>
-                    <th scope="col">Имя</th>
-                    <th scope="col">Отчество</th>
-                    <th scope="col">Дата рождения</th>
-                    <th scope="col">Группа</th>
-                    <th scope="col">Дата первой вакцинации</th>
-                    <th scope="col">Дата второй вакцинации</th>
-                    <th scope="col">Желает пройти вакцинацию</th>
-                    <th scope="col">Дата и время последнего редактирования</th>
+                    <th scope="col" class="align-middle">№ п.п</th>
+                    <th scope="col" class="align-middle">Фамилия</th>
+                    <th scope="col" class="align-middle">Имя</th>
+                    <th scope="col" class="align-middle">Отчество</th>
+                    <th scope="col" class="align-middle">Дата рождения</th>
+                    <th scope="col" class="align-middle">Группа</th>
+                    <th scope="col" class="align-middle">Дата первой вакцинации</th>
+                    <th scope="col" class="align-middle">Дата второй вакцинации</th>
+                    <th scope="col" class="align-middle">Желает пройти вакцинацию</th>
+                    <th scope="col" class="align-middle">Дата и время последнего редактирования</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for employee in employee_cadet_list %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><a href="{% url 'covid_cadet:employee-cadet-update' employee.id %}"
+                        <td class="align-middle">{{ forloop.counter }}</td>
+                        <td class="align-middle"><a href="{% url 'covid_cadet:employee-cadet-update' employee.id %}"
                                class="link-secondary needs-next">{{ employee.last_name }}</a></td>
-                        <td>{{ employee.first_name }}</td>
-                        <td>{{ employee.patronymic }}</td>
-                        <td>{{ employee.date_of_birth|default_if_none:"Нет данных" }}</td>
-                        <td>{{ employee.group_fk.group_name }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{ employee.last_modified }}</td>
+                        <td class="align-middle">{{ employee.first_name }}</td>
+                        <td class="align-middle">{{ employee.patronymic }}</td>
+                        <td class="align-middle">{{ employee.date_of_birth|default_if_none:"Нет данных" }}</td>
+                        <td class="align-middle">{{ employee.group_fk.group_name }}</td>
+                        <td class="align-middle">{{ employee.last_date1|date:"d.m.Y" }}</td>
+                        <td class="align-middle">{{ employee.last_date2|date:"d.m.Y" }}</td>
+                        <td class="align-middle">
+                            {% if employee.is_willing %}
+                                <i class="far fa-check-circle"></i>
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">{{ employee.last_modified|date:"d.m.Y H:m" }}</td>
+                        <td class="align-middle">
+                            <a href="{% url 'covid_cadet:employee-vaccines' employee.id %}"
+                               class="link-secondary">вакцинации</a><br>
+                            <a href="{% url 'covid_cadet:employee-info' employee.id %}"
+                               class="link-secondary">сводная информация</a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

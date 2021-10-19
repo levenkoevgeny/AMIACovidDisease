@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Group, Course, SubdivisionCadet, EmployeeCadet
+from .models import Group, Course, SubdivisionCadet, EmployeeCadet, VaccineCourse
 from django import forms
 
 myDateInput = forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'})
@@ -24,3 +24,11 @@ class EmployeeCadetFullDataForm(ModelForm):
                   'group_fk', 'sex', 'work_status', 'date_of_death',
                   'has_contraindications', 'contraindications_explain', 'marital_status', 'is_willing']
         widgets = {'date_of_birth': myDateInput, 'date_of_death': myDateInput, }
+
+
+class VaccineCourseForm(ModelForm):
+    class Meta:
+        model = VaccineCourse
+        fields = ['vaccine_kind', 'date1', 'date2']
+        widgets = {'date1': myDateInput,
+                   'date2': myDateInput}

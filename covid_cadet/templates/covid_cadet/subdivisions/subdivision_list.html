@@ -10,15 +10,20 @@
 {% block content %}
     <div class="container">
         <br><br>
-        {#            <div class="card" style="width: 40rem;">#}
-        {#                <div class="card-body">#}
-        {#                    <h4 class="card-title">Сводные данные</h4>#}
-        {#                    <h5><span class="badge bg-secondary">720</span> Всего сотрудников</h5>#}
-        {#                    <h5><span class="badge bg-secondary">100/70/30</span> Всего больничных листов/болезнь/карантин</h5>#}
-        {#                    <h5><span class="badge bg-secondary">10</span> сейчас открыто больничных листов</h5>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#            <br><br>#}
+        <div class="card" style="width: 40rem;">
+            <div class="card-body">
+                <h4 class="card-title">Сводные данные</h4>
+                <h5>Всего сотрудников <span class="badge bg-secondary">{{ employee_count_sum }}</span></h5>
+                <h5>Получили одну прививку <span
+                        class="badge bg-secondary">{{ employee_count_sum_covid_1 }}</span></h5>
+                <h5>Получили две прививки <span
+                        class="badge bg-secondary">{{ employee_count_sum_covid_2 }}</span></h5>
+                <h5>Охват вакцинацией (первая прививка), % <span
+                        class="badge bg-secondary">{{ employee_count_percent_average }}</span></h5>
+                <h5>Охват вакцинацией (вторая прививка), % <span
+                        class="badge bg-secondary">{{ employee_count_percent_average_second }}</span></h5>
+            </div>
+        </div>
         <p>
             <a class="link-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
                aria-expanded="false" aria-controls="collapseExample">
@@ -43,37 +48,38 @@
         </div>
     </div>
     <div class="container-fluid">
-
         {% if subdivisions_list %}
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">№ п.п</th>
-                    <th scope="col">Факультет</th>
-                    <th scope="col">Численность</th>
-                    <th scope="col">Количество лиц, получивших одну прививку против инфекции COVID-19</th>
-                    <th scope="col">Количество лиц, получивших две прививки против инфекции COVID-19</th>
-                    <th scope="col">Количество лиц, получивших две прививки против инфекции COVID-19</th>
-                    <th scope="col">Охват (первая прививка)</th>
-                    <th scope="col">Охват (вторая прививка)</th>
-                    <th scope="col">Желающие пройти вакцинацию</th>
-                    <th scope="col">Последнее редактирование</th>
+                    <th scope="col" class="align-middle">№ п.п</th>
+                    <th scope="col" class="align-middle">Факультет</th>
+                    <th scope="col" class="align-middle">Численность</th>
+                    <th scope="col" class="align-middle">Количество лиц, получивших одну прививку против инфекции
+                        COVID-19
+                    </th>
+                    <th scope="col" class="align-middle">Количество лиц, получивших две прививки против инфекции
+                        COVID-19
+                    </th>
+                    <th scope="col" class="align-middle">Охват (первая прививка)</th>
+                    <th scope="col" class="align-middle">Охват (вторая прививка)</th>
+                    <th scope="col" class="align-middle">Желающие пройти вакцинацию</th>
+                    <th scope="col" class="align-middle">Последнее редактирование</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for subdivision in subdivisions_list %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><a href="{% url 'covid_cadet:course-list' subdivision.id %}"
-                               class="link-secondary">{{ subdivision.subdivision_name }}</a></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="align-middle">{{ forloop.counter }}</td>
+                        <td class="align-middle"><a href="{% url 'covid_cadet:course-list' subdivision.id %}"
+                                                    class="link-secondary">{{ subdivision.subdivision_name }}</a></td>
+                        <td class="align-middle">{{ subdivision.get_count }}</td>
+                        <td class="align-middle">{{ subdivision.get_covid_1_count }}/{{ subdivision.get_covid_1_count_adult }}</td>
+                        <td class="align-middle">{{ subdivision.get_covid_2_count }}/{{ subdivision.get_covid_1_count_adult }}</td>
+                        <td class="align-middle">{{ subdivision.get_covid_percent }}/{{ subdivision.get_covid_percent_adult }}</td>
+                        <td class="align-middle">{{ subdivision.get_covid_percent_second }}/{{ subdivision.get_covid_percent_adult_second }}</td>
+                        <td class="align-middle">{{ subdivision.get_willing_count }}/{{ subdivision.get_willing_count_adult }}</td>
+                        <td class="align-middle">{{ subdivision.last_modified|date:"d.m.Y H:m" }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

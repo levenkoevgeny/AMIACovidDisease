@@ -83,7 +83,15 @@
                             <td class="align-middle">{{ subdivision.get_employee_count_with_second_vaccine|default_if_none:"Нет данных" }}</td>
                             <td class="align-middle">{{ subdivision.get_covid_percent_first|default_if_none:"Нет данных" }}</td>
                             <td class="align-middle">{{ subdivision.get_covid_percent_second|default_if_none:"Нет данных" }}</td>
-                            <td class="align-middle">{{ subdivision.last_modified|default_if_none:"Нет данных" }}</td>
+                            <td class="align-middle">
+                                {% if subdivision.last_modified %}
+                                    {{ subdivision.last_modified|date:"d.m.Y H:m" }}
+                                {% else %}
+                                    Нет данных
+                                {% endif %}
+
+
+                            </td>
                         </tr>
                     {% endif %}
 

@@ -48,30 +48,30 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">№ п.п</th>
-                    <th scope="col">Курс</th>
-                    <th scope="col">Численность</th>
-                    <th scope="col">Количество лиц, получивших одну прививку против инфекции COVID-19</th>
-                    <th scope="col">Количество лиц, получивших две прививки против инфекции COVID-19</th>
-                    <th scope="col">Охват (первая прививка)</th>
-                    <th scope="col">Охват (вторая прививка)</th>
-                    <th scope="col">Желающие пройти вакцинацию</th>
-                    <th scope="col">Дата и время последнего редактирования</th>
+                    <th scope="col" class="align-middle">№ п.п</th>
+                    <th scope="col" class="align-middle">Курс</th>
+                    <th scope="col" class="align-middle">Численность</th>
+                    <th scope="col" class="align-middle">Количество лиц, получивших одну прививку против инфекции COVID-19</th>
+                    <th scope="col" class="align-middle">Количество лиц, получивших две прививки против инфекции COVID-19</th>
+                    <th scope="col" class="align-middle">Охват (первая прививка)</th>
+                    <th scope="col" class="align-middle">Охват (вторая прививка)</th>
+                    <th scope="col" class="align-middle">Желающие пройти вакцинацию</th>
+                    <th scope="col" class="align-middle">Дата и время последнего редактирования</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for course in courses_list %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><a href="{% url 'covid_cadet:employee-cadet-list' %}?group_fk__course={{ course.id }}"
+                        <td class="align-middle">{{ forloop.counter }}</td>
+                        <td class="align-middle"><a href="{% url 'covid_cadet:employee-cadet-list' %}?group_fk__course={{ course.id }}"
                                class="link-secondary">{{ course.course_name }}</a></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="align-middle">{{ course.get_count }}</td>
+                        <td class="align-middle">{{ course.get_covid_1_count }}/{{ course.get_covid_1_count_adult }}</td>
+                        <td class="align-middle">{{ course.get_covid_2_count }}/{{ course.get_covid_1_count_adult }}</td>
+                        <td class="align-middle">{{ course.get_covid_percent }}/{{ course.get_covid_percent_adult }}</td>
+                        <td class="align-middle">{{ course.get_covid_percent_second }}/{{ course.get_covid_percent_adult_second }}</td>
+                        <td class="align-middle">{{ course.get_willing_count }}/{{ course.get_willing_count_adult }}</td>
+                        <td class="align-middle">{{ course.last_modified|date:"d.m.Y H:m" }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

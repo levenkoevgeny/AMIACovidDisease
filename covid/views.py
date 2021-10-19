@@ -33,13 +33,6 @@ def subdivision_get_covid_2_count_sum(subdivisions_list):
     return count
 
 
-# def get_willing_count_sum(subdivision_list):
-#     count = 0
-#     for subdivision in subdivision_list:
-#         count += subdivision.get_willing_count
-#     return count
-
-
 def subdivision_get_covid_percent_sum_first(subdivisions_list):
     try:
         res = subdivision_get_covid_1_count_sum(subdivisions_list) / subdivision_get_employee_count_sum(
@@ -58,63 +51,47 @@ def subdivision_get_covid_percent_sum_second(subdivisions_list):
     return round(res, 2)
 
 
-#
-#
-# def get_employee_count_sum(employees_list):
-#     count = 0
-#     for employee in employees_list:
-#         count += employee.get_employee_count
-#     return count
-#
-#
-# def get_employee_covid_1_count_sum(employees_list):
-#     count = 0
-#     for employee in employees_list:
-#         count += employee.get_employee_count_with_first_vaccine
-#     return count
-#
-#
-# def get_employee_covid_2_count_sum(employees_list):
-#     count = 0
-#     for employee in employees_list:
-#         count += employee.get_employee_count_with_second_vaccine
-#     return count
-#
-#
-# def get_employee_covid_percent_sum_first(employees_list):
-#     try:
-#         res = subdivision_get_covid_1_count_sum(employees_list) / subdivision_get_employee_count_sum(employees_list) * 100
-#     except ZeroDivisionError:
-#         res = 0.0
-#     return round(res, 2)
-#
-#
-# def get_employee_covid_percent_sum_second(subdivisions_list):
-#     try:
-#         res = subdivision_get_covid_2_count_sum(subdivisions_list) / subdivision_get_employee_count_sum(subdivisions_list) * 100
-#     except ZeroDivisionError:
-#         res = 0.0
-#     return round(res, 2)
+def get_employee_count_sum(employees_list):
+    return employees_list.count()
+
+
+def get_covid_1_count_sum(employees_list):
+    return employees_list.filter(last_date1__isnull=False).count()
+
+
+def get_covid_2_count_sum(employees_list):
+    return employees_list.filter(last_date2__isnull=False).count()
+
+
+def get_employee_covid_percent_sum_first(employees_list):
+    try:
+        res = get_covid_1_count_sum(employees_list) / get_employee_count_sum(
+            employees_list) * 100
+    except ZeroDivisionError:
+        res = 0.0
+    return round(res, 2)
+
+
+def get_employee_covid_percent_sum_second(employees_list):
+    try:
+        res = get_covid_2_count_sum(employees_list) / get_employee_count_sum(employees_list) * 100
+    except ZeroDivisionError:
+        res = 0.0
+    return round(res, 2)
+
 
 @login_required
 def employee_list(request):
-    # path = str(request.get_full_path())
-    # request.session['next_path'] = path
     employees_list = Employee.objects.all()
     f = EmployeeFilter(request.GET, queryset=employees_list, request=request)
-    condition = "all"
-    if 'is_vaccinated' in request.GET:
-        if request.GET['is_vaccinated'] == "all":
-            result = f.qs
-        else:
-            condition = bool(request.GET['is_vaccinated'])
-            result = [row for row in f.qs if row.get_is_vaccinated is condition]
-    else:
-        result = f.qs
     return render(request, 'covid/employee/employee_list.html',
-                  {'employees_list': result,
+                  {'employees_list': f.qs,
                    'filter': f,
-                   'condition': str(condition),
+                   'employee_count_sum': get_employee_count_sum(f.qs),
+                   'employee_count_sum_first_vaccine': get_covid_1_count_sum(f.qs),
+                   'employee_count_sum_second_vaccine': get_covid_2_count_sum(f.qs),
+                   'get_employee_covid_percent_sum_first': get_employee_covid_percent_sum_first(f.qs),
+                   'get_employee_covid_percent_sum_second': get_employee_covid_percent_sum_second(f.qs),
                    })
 
 
@@ -167,8 +144,6 @@ def employee_update(request, employee_id):
 
 @login_required
 def employee_info(request, employee_id):
-    # path = str(request.get_full_path())
-    # request.session['next_path'] = path
     employee = get_object_or_404(Employee, pk=employee_id)
     return render(request, 'covid/employee/employee_info.html', {'employee': employee})
 
@@ -290,10 +265,10 @@ def get_old_employees(request):
 @transaction.atomic
 @login_required
 def init(request):
-    subdivision_list = Subdivision.objects.all()
+    subdivisions_list = Subdivision.objects.all()
     user_list = User.objects.all()
 
-    for subdivision in subdivision_list:
+    for subdivision in subdivisions_list:
         if not user_list.filter(username=subdivision.subdivision_short_name).exists():
             user = User.objects.create_user(subdivision.subdivision_short_name, 'test@yandex.by', '2021')
             user.is_superuser = False

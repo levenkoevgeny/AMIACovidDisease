@@ -13,10 +13,15 @@
         <div class="card" style="width: 40rem;">
             <div class="card-body">
                 <h4 class="card-title">Сводные данные</h4>
-                <h5>Всего сотрудников <span class="badge bg-secondary">720</span></h5>
-                <h5>Получили одну прививку <span class="badge bg-secondary">100/70/30</span></h5>
-                <h5>Получили две прививки <span class="badge bg-secondary">10</span></h5>
-                <h5>Имеют противопаказания <span class="badge bg-secondary">10</span></h5>
+                <h5>Всего сотрудников <span class="badge bg-secondary">{{ employee_count_sum }}</span></h5>
+                <h5>Получили одну прививку <span
+                        class="badge bg-secondary">{{ employee_count_sum_first_vaccine }}</span></h5>
+                <h5>Получили две прививки <span
+                        class="badge bg-secondary">{{ employee_count_sum_second_vaccine }}</span></h5>
+                <h5>Охват вакцинацией (первая прививка), % <span
+                        class="badge bg-secondary">{{ get_employee_covid_percent_sum_first }}</span></h5>
+                <h5>Охват вакцинацией (вторая прививка), % <span
+                        class="badge bg-secondary">{{ get_employee_covid_percent_sum_second }}</span></h5>
             </div>
         </div>
         <br><br>
@@ -108,24 +113,36 @@
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label class="form-label">Вакцинирован</label>
-                                <select class="form-select" aria-label="Default select example" name="is_vaccinated">
-                                    {% if condition == "all" %}
-                                        <option value="all" selected>---------</option>
-                                        <option value="True">Да</option>
-                                        <option value="">Нет</option>
-                                    {% elif condition == "True" %}
-                                        <option value="all">---------</option>
-                                        <option value="True" selected>Да</option>
-                                        <option value="">Нет</option>
-                                    {% else %}
-                                        <option value="all">---------</option>
-                                        <option value="True">Да</option>
-                                        <option value="" selected>Нет</option>
-                                    {% endif %}
-                                </select>
+                                <label class="form-label">Первая прививка</label>
+                                {% render_field filter.form.has_date1 class+="form-select" %}
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Вторая прививка</label>
+                                {% render_field filter.form.has_date2 class+="form-select" %}
+                            </div>
+                        </div>
+                        {#                        <div class="col-md-3">#}
+                        {#                            <div class="mb-3">#}
+                        {#                                <label class="form-label">Вакцинирован</label>#}
+                        {#                                <select class="form-select" aria-label="Default select example" name="is_vaccinated">#}
+                        {#                                    {% if condition == "all" %}#}
+                        {#                                        <option value="all" selected>---------</option>#}
+                        {#                                        <option value="True">Да</option>#}
+                        {#                                        <option value="">Нет</option>#}
+                        {#                                    {% elif condition == "True" %}#}
+                        {#                                        <option value="all">---------</option>#}
+                        {#                                        <option value="True" selected>Да</option>#}
+                        {#                                        <option value="">Нет</option>#}
+                        {#                                    {% else %}#}
+                        {#                                        <option value="all">---------</option>#}
+                        {#                                        <option value="True">Да</option>#}
+                        {#                                        <option value="" selected>Нет</option>#}
+                        {#                                    {% endif %}#}
+                        {#                                </select>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
                     </div>
                     <button type="submit" class="btn btn-secondary">Поиск</button>
                     <a href="{% url 'covid:list' %}" class="btn btn-secondary">Сбросить фильтр</a>
@@ -136,7 +153,8 @@
     <div class="container-fluid">
         {% if request.user.is_superuser %}
             <div style="text-align: right" class="mb-3">
-                <a href="{% url 'covid:employee-add' %}" class="link-secondary needs-next"><b>Добавить сотрудника</b></a>
+                <a href="{% url 'covid:employee-add' %}" class="link-secondary needs-next"><b>Добавить
+                    сотрудника</b></a>
             </div>
         {% endif %}
         {% if employees_list %}
@@ -166,10 +184,15 @@
                         <td class="align-middle">{{ employee.patronymic|default_if_none:"Нет данных" }}</td>
                         <td class="align-middle">{{ employee.subdivision|default_if_none:"Нет данных" }}</td>
                         <td class="align-middle">{{ employee.date_of_birth|default_if_none:"Нет данных" }}</td>
-                        <td class="align-middle">{{ employee.get_is_vaccinated_first_date|default_if_none:"Нет данных" }}</td>
-                        <td class="align-middle">{{ employee.get_is_vaccinated_second_date|default_if_none:"Нет данных" }}</td>
-                        <td class="align-middle">{{ employee.last_modified|default_if_none:"Нет данных" }}</td>
-
+                        <td class="align-middle">{{ employee.last_date1|default_if_none:"Нет данных" }}</td>
+                        <td class="align-middle">{{ employee.last_date2|default_if_none:"Нет данных" }}</td>
+                        <td class="align-middle">
+                            {% if employee.last_modified %}
+                                {{ employee.last_modified|date:"d.m.Y H:m" }}
+                            {% else %}
+                                Нет данных
+                            {% endif %}
+                        </td>
                         <td class="align-middle">
                             <a href="{% url 'covid:employee-vaccines' employee.id %}"
                                class="link-secondary">вакцинации</a><br>
