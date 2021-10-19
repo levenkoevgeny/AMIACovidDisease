@@ -125,26 +125,20 @@
                                 {% render_field filter.form.is_willing class+="form-select" %}
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label class="form-label">Вакцинирован</label>
-                                <select class="form-select" aria-label="Default select example" name="is_vaccinated">
-                                    {% if condition == "all" %}
-                                        <option value="all" selected>---------</option>
-                                        <option value="True">Да</option>
-                                        <option value="">Нет</option>
-                                    {% elif condition == "True" %}
-                                        <option value="all">---------</option>
-                                        <option value="True" selected>Да</option>
-                                        <option value="">Нет</option>
-                                    {% else %}
-                                        <option value="all">---------</option>
-                                        <option value="True">Да</option>
-                                        <option value="" selected>Нет</option>
-                                    {% endif %}
-                                </select>
+                                <label class="form-label">Первая прививка</label>
+                                {% render_field filter.form.has_date1 class+="form-select" %}
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Вторая прививка</label>
+                                {% render_field filter.form.has_date2 class+="form-select" %}
+                            </div>
+                        </div>
+
                     </div>
                     <button type="submit" class="btn btn-secondary">Поиск</button>
                     <a href="{% url 'covid_cadet:employee-cadet-list' %}" class="btn btn-secondary">Сбросить фильтр</a>
@@ -155,11 +149,12 @@
     <div class="container-fluid">
         {% if request.user.is_superuser %}
             <div style="text-align: right" class="mb-3">
-                <a href="{% url 'covid_cadet:employee-cadet-input' %}" class="link-secondary"><b>Добавить
+                <a href="{% url 'covid_cadet:employee-cadet-input' %}" class="btn btn-secondary needs-next"><b>Добавить
                     курсанта</b></a>
             </div>
         {% endif %}
         {% if employee_cadet_list %}
+            <h6>Найдено записей - <b>{{ employee_cadet_list.count }}</b></h6>
             <table class="table table-hover">
                 <thead>
                 <tr>

@@ -10,16 +10,16 @@
 {% block content %}
         <div class="container">
             <br><br>
-            <div class="card" style="width: 40rem;">
-                <div class="card-body">
-                    <h4 class="card-title">Сводные данные</h4>
-                    <h5><span class="badge bg-secondary">720</span> Всего сотрудников</h5>
-                    <h5><span class="badge bg-secondary">100/70/30</span> Всего больничных листов/болезнь/карантин</h5>
-                    <h5><span class="badge bg-secondary">10</span> сейчас открыто больничных листов</h5>
-                </div>
-            </div>
+{#            <div class="card" style="width: 40rem;">#}
+{#                <div class="card-body">#}
+{#                    <h4 class="card-title">Сводные данные</h4>#}
+{#                    <h5><span class="badge bg-secondary">720</span> Всего сотрудников</h5>#}
+{#                    <h5><span class="badge bg-secondary">100/70/30</span> Всего больничных листов/болезнь/карантин</h5>#}
+{#                    <h5><span class="badge bg-secondary">10</span> сейчас открыто больничных листов</h5>#}
+{#                </div>#}
+{#            </div>#}
 
-            <br><br>
+{#            <br><br>#}
 
             <p>
                 <a class="link-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
@@ -125,7 +125,7 @@
         </div>
         <div class="container-fluid">
             <div style="text-align: right" class="mb-3">
-                <a href="{% url 'disease:disease-input' %}" class="link-secondary needs-next"><b>Новый больничный</b></a>
+                <a href="{% url 'disease:disease-input' %}" class="btn btn-secondary needs-next"><b>Новый больничный</b></a>
             </div>
             {% if diseases_list %}
                 <h6>Найдено записей - <b>{{ diseases_list.count }}</b></h6>

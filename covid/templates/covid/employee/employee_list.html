@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 {% block own_css %}{% endblock %}
 {% block title %}
-    <title>Больничные - главная</title>
+    <title>Сотрудники</title>
     {#    <link rel="stylesheet" type="text/css" href="{% static 'disease/css/dashboard.css' %}">#}
 {% endblock %}
 
@@ -153,7 +153,7 @@
     <div class="container-fluid">
         {% if request.user.is_superuser %}
             <div style="text-align: right" class="mb-3">
-                <a href="{% url 'covid:employee-add' %}" class="link-secondary needs-next"><b>Добавить
+                <a href="{% url 'covid:employee-add' %}" class="btn btn-secondary needs-next"><b>Добавить
                     сотрудника</b></a>
             </div>
         {% endif %}

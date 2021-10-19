@@ -79,7 +79,9 @@ class EmployeeCadetFilter(django_filters.FilterSet):
                                                       }
                                                   ))
     has_contraindications = django_filters.ChoiceFilter(choices=YES_NO, widget=forms.Select)
-    is_willing = django_filters.ChoiceFilter(choices=YES_NO, widget=forms.Select)
+    is_willing = django_filters.BooleanFilter()
+    has_date1 = django_filters.BooleanFilter(field_name='last_date1', lookup_expr='isnull', exclude=True)
+    has_date2 = django_filters.BooleanFilter(field_name='last_date2', lookup_expr='isnull', exclude=True)
 
     @property
     def qs(self):
