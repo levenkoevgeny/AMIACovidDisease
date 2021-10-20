@@ -24,6 +24,7 @@
                         class="badge bg-secondary">{{ employee_count_percent_average_second }}</span></h5>
             </div>
         </div>
+        <br>
         <p>
             <a class="link-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
                aria-expanded="false" aria-controls="collapseExample">
@@ -37,7 +38,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Подразделение</label>
-                                {% render_field filter.form.id class+="form-control my-select2" style="width: 100%" %}
+                                {% render_field filter.form.subdivision_name class+="form-control my-select2" style="width: 100%" %}
                             </div>
                         </div>
                     </div>

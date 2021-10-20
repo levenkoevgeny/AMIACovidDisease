@@ -215,7 +215,7 @@ def subdivision_list(request):
         subdivisions_list = Subdivision.objects.all()
     else:
         subdivisions_list = Subdivision.objects.filter(owner=request.user)
-    f = SubdivisionFilter(request.GET, queryset=subdivisions_list)
+    f = SubdivisionFilter(request.GET, queryset=subdivisions_list, request=request)
     return render(request, 'covid/subdivision/subdivision_list.html',
                   {
                       'subdivisions_list': f.qs,

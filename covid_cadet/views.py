@@ -17,7 +17,7 @@ def subdivision_list(request):
         subdivisions_list = SubdivisionCadet.objects.all()
     else:
         subdivisions_list = SubdivisionCadet.objects.filter(owner=request.user)
-    f = SubdivisionCadetFilter(request.GET, queryset=subdivisions_list)
+    f = SubdivisionCadetFilter(request.GET, queryset=subdivisions_list, request=request)
     return render(request, 'covid_cadet/subdivisions/subdivision_list.html',
                   {'subdivisions_list': f.qs,
                    'filter': f,

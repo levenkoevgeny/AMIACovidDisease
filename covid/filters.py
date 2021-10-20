@@ -5,6 +5,7 @@ from .models import Employee, Subdivision, Rank, Position
 
 
 def subdivisions(request):
+    print('h', request)
     if request is None:
         return Subdivision.objects.all()
     owner = request.user
@@ -77,7 +78,7 @@ class EmployeeFilter(django_filters.FilterSet):
 
 
 class SubdivisionFilter(django_filters.FilterSet):
-    subdivision_name = django_filters.ModelMultipleChoiceFilter(queryset=Subdivision.objects.all())
+    subdivision_name = django_filters.ModelMultipleChoiceFilter(queryset=subdivisions)
 
     class Meta:
         model = Subdivision
