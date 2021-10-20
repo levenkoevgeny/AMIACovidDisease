@@ -62,6 +62,20 @@ class DiseaseFilter(django_filters.FilterSet):
                                                       }
                                                   ))
 
+    date_of_end_start = django_filters.DateFilter(field_name='date_of_end', lookup_expr='gte',
+                                                    widget=forms.DateInput(
+                                                        attrs={
+                                                            'type': 'date'
+                                                        }
+                                                    ))
+
+    date_of_end_end = django_filters.DateFilter(field_name='date_of_end', lookup_expr='lte',
+                                                  widget=forms.DateInput(
+                                                      attrs={
+                                                          'type': 'date'
+                                                      }
+                                                  ))
+
     class Meta:
         model = Disease
         fields = '__all__'

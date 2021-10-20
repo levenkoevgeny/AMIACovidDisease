@@ -8,163 +8,176 @@
 {% endblock %}
 
 {% block content %}
-        <div class="container">
-            <br><br>
-{#            <div class="card" style="width: 40rem;">#}
-{#                <div class="card-body">#}
-{#                    <h4 class="card-title">Сводные данные</h4>#}
-{#                    <h5><span class="badge bg-secondary">720</span> Всего сотрудников</h5>#}
-{#                    <h5><span class="badge bg-secondary">100/70/30</span> Всего больничных листов/болезнь/карантин</h5>#}
-{#                    <h5><span class="badge bg-secondary">10</span> сейчас открыто больничных листов</h5>#}
-{#                </div>#}
-{#            </div>#}
+    <div class="container">
+        <br><br>
+        {#            <div class="card" style="width: 40rem;">#}
+        {#                <div class="card-body">#}
+        {#                    <h4 class="card-title">Сводные данные</h4>#}
+        {#                    <h5><span class="badge bg-secondary">720</span> Всего сотрудников</h5>#}
+        {#                    <h5><span class="badge bg-secondary">100/70/30</span> Всего больничных листов/болезнь/карантин</h5>#}
+        {#                    <h5><span class="badge bg-secondary">10</span> сейчас открыто больничных листов</h5>#}
+        {#                </div>#}
+        {#            </div>#}
 
-{#            <br><br>#}
+        {#            <br><br>#}
 
-            <p>
-                <a class="link-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
-                   aria-expanded="false" aria-controls="collapseExample">
-                    Расширенный поиск
-                </a>
-            </p>
-            <div class="collapse" id="collapseExample">
-                <div class="card card-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Фамилия</label>
-                                    {% render_field filter.form.employee__last_name class+="form-control" %}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Подразделение</label>
-                                    {% render_field filter.form.employee__subdivision class+="form-select" %}
-                                </div>
+        <p>
+            <a class="link-secondary" data-bs-toggle="collapse" href="#collapseExample" role="button"
+               aria-expanded="false" aria-controls="collapseExample">
+                Расширенный поиск
+            </a>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Фамилия</label>
+                                {% render_field filter.form.employee__last_name class+="form-control" %}
                             </div>
                         </div>
-                        {#                        <hr class="dropdown-divider">#}
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Вид больничного</label>
-                                    {% render_field filter.form.disease_kind class+="form-select" %}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Болезнь</label>
-                                    {% render_field filter.form.disease class+="form-select my-select2" style="width: 100%" %}
-                                </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Подразделение</label>
+                                {% render_field filter.form.employee__subdivision class+="form-select" %}
                             </div>
                         </div>
-
-                        {#                        <hr class="dropdown-divider">#}
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label class="form-label">Дата обращения к врачу (с)</label>
-                                    {% render_field filter.form.date_of_application_start class+="form-control" %}
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label class="form-label">Дата обращения к врачу (по)</label>
-                                    {% render_field filter.form.date_of_application_start class+="form-control" %}
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label class="form-label">Дата сдачи анализа (с)</label>
-                                    {% render_field filter.form.date_of_analysis_start class+="form-control" %}
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label class="form-label">Дата сдачи анализа (по)</label>
-                                    {% render_field filter.form.date_of_analysis_start class+="form-control" %}
-                                </div>
+                    </div>
+                    {#                        <hr class="dropdown-divider">#}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Вид больничного</label>
+                                {% render_field filter.form.disease_kind class+="form-select" %}
                             </div>
                         </div>
-
-                        {#                        <hr class="dropdown-divider">#}
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label class="form-label">Дата начала больничного/карантина (с)</label>
-                                    {% render_field filter.form.date_of_begin_start class+="form-control" %}
-                                </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Болезнь</label>
+                                {% render_field filter.form.disease class+="form-select my-select2" style="width: 100%" %}
                             </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label class="form-label">Дата окончания больничного/карантина (по)</label>
-                                    {% render_field filter.form.date_of_begin_end class+="form-control" %}
-                                </div>
-                            </div>
-                            {#                            <div class="col-md-3">#}
-                            {#                                <div class="mb-3">#}
-                            {#                                    <label class="form-label">Дата сдачи анализа (с)</label>#}
-                            {#                                    {% render_field filter.form.date_of_analysis_start class+="form-control" %}#}
-                            {#                                </div>#}
-                            {#                            </div>#}
-                            {#                            <div class="col-md-3">#}
-                            {#                                <div class="mb-3">#}
-                            {#                                    <label class="form-label">Дата сдачи анализа (по)</label>#}
-                            {#                                    {% render_field filter.form.date_of_analysis_start class+="form-control" %}#}
-                            {#                                </div>#}
-                            {#                            </div>#}
                         </div>
+                    </div>
+
+                    {#                        <hr class="dropdown-divider">#}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата обращения к врачу (с)</label>
+                                {% render_field filter.form.date_of_application_start class+="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата обращения к врачу (по)</label>
+                                {% render_field filter.form.date_of_application_start class+="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата сдачи анализа (с)</label>
+                                {% render_field filter.form.date_of_analysis_start class+="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата сдачи анализа (по)</label>
+                                {% render_field filter.form.date_of_analysis_start class+="form-control" %}
+                            </div>
+                        </div>
+                    </div>
+
+                    {#                        <hr class="dropdown-divider">#}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата начала больничного/карантина (с)</label>
+                                {% render_field filter.form.date_of_begin_start class+="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата начала больничного/карантина (по)</label>
+                                {% render_field filter.form.date_of_begin_end class+="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата окончания больничного/карантина (с)</label>
+                                {% render_field filter.form.date_of_end_start class+="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label class="form-label">Дата окончания больничного/карантина (по)</label>
+                                {% render_field filter.form.date_of_end_end class+="form-control" %}
+                            </div>
+                        </div>
+                        {#                            <div class="col-md-3">#}
+                        {#                                <div class="mb-3">#}
+                        {#                                    <label class="form-label">Дата сдачи анализа (с)</label>#}
+                        {#                                    {% render_field filter.form.date_of_analysis_start class+="form-control" %}#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                            <div class="col-md-3">#}
+                        {#                                <div class="mb-3">#}
+                        {#                                    <label class="form-label">Дата сдачи анализа (по)</label>#}
+                        {#                                    {% render_field filter.form.date_of_analysis_start class+="form-control" %}#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                    </div>
 
 
-                        <button type="submit" class="btn btn-secondary">Поиск</button>
-                        <a href="{% url 'disease:disease-list' %}" class="btn btn-secondary">Сбросить фильтр</a>
-                    </form>
-                </div>
+                    <button type="submit" class="btn btn-secondary">Поиск</button>
+                    <a href="{% url 'disease:disease-list' %}" class="btn btn-secondary">Сбросить фильтр</a>
+                </form>
             </div>
         </div>
-        <div class="container-fluid">
-            <div style="text-align: right" class="mb-3">
-                <a href="{% url 'disease:disease-input' %}" class="btn btn-secondary needs-next"><b>Новый больничный</b></a>
-            </div>
-            {% if diseases_list %}
-                <h6>Найдено записей - <b>{{ diseases_list.count }}</b></h6>
-                <table class="table">
-                    <thead>
+    </div>
+    <div class="container-fluid">
+        <div style="text-align: right" class="mb-3">
+            <a href="{% url 'disease:disease-input' %}" class="btn btn-secondary needs-next"><b>Новый больничный</b></a>
+        </div>
+        {% if diseases_list %}
+            <h6>Найдено записей - <b>{{ diseases_list.count }}</b></h6>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">№ п.п</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Тип больничного</th>
+                    <th scope="col">Болезнь</th>
+                    <th scope="col">Дата открытия больничного</th>
+                    <th scope="col">Дата закрытия больничного</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for disease in diseases_list %}
                     <tr>
-                        <th scope="col">№ п.п</th>
-                        <th scope="col">Фамилия</th>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Отчество</th>
-                        <th scope="col">Тип больничного</th>
-                        <th scope="col">Болезнь</th>
-                        <th scope="col">Дата открытия больничного</th>
-                        <th scope="col">Дата закрытия больничного</th>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'covid:employee-update' disease.employee.id %}"
+                               class="link-secondary needs-next">{{ disease.employee.last_name }}</a></td>
+                        <td>{{ disease.employee.first_name|default_if_none:"" }}</td>
+                        <td>{{ disease.employee.patronymic|default_if_none:"" }}</td>
+                        <td><a href="{% url 'disease:disease-update' disease.id %}"
+                               class="link-secondary needs-next">{{ disease.get_disease_kind|default_if_none:"" }}</a>
+                        </td>
+                        <td>{{ disease.disease|default_if_none:"Нет" }}</td>
+                        <td>{{ disease.date_of_begin|default_if_none:"" }}</td>
+                        <td>{{ disease.date_of_end|default_if_none:"" }}</td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for disease in diseases_list %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td><a href="{% url 'covid:employee-update' disease.employee.id %}"
-                                   class="link-secondary needs-next">{{ disease.employee.last_name }}</a></td>
-                            <td>{{ disease.employee.first_name|default_if_none:"" }}</td>
-                            <td>{{ disease.employee.patronymic|default_if_none:"" }}</td>
-                            <td><a href="{% url 'disease:disease-update' disease.id %}"
-                                   class="link-secondary needs-next">{{ disease.get_disease_kind|default_if_none:"" }}</a></td>
-                            <td>{{ disease.disease|default_if_none:"Нет" }}</td>
-                            <td>{{ disease.date_of_begin|default_if_none:"" }}</td>
-                            <td>{{ disease.date_of_end|default_if_none:"" }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <div class="container">
-                    <h5>Список пуст</h5>
-                </div>
-            {% endif %}
-        </div>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="container">
+                <h5>Список пуст</h5>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block own_js %}{% endblock %}
