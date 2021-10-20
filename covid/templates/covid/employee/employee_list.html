@@ -196,8 +196,10 @@
                         <td class="align-middle">
                             <a href="{% url 'covid:employee-vaccines' employee.id %}"
                                class="link-secondary">вакцинации</a><br>
-                            <a href="{% url 'covid:employee-info' employee.id %}"
-                               class="link-secondary">сводная информация</a>
+                            {% if request.user.is_superuser %}
+                                <a href="{% url 'covid:employee-info' employee.id %}"
+                                   class="link-secondary">сводная информация</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
